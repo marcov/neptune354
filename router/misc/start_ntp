@@ -1,0 +1,18 @@
+#!/bin/sh
+
+NTPD="ntpd -s"
+
+logger "Starting ntpd with qos enabled."
+
+$NTPD 2>&1 | logger
+
+while ! ps | grep ntpd
+do
+		sleep 2
+        NTPD 2>&1 | logger
+done
+logger "ntpd start success."
+exit 0;
+
+
+

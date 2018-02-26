@@ -1,0 +1,7 @@
+*** Important information ***
+
+To compile simply enter:
+
+./make.sh
+
+Remember to export the path of the toolchain first.

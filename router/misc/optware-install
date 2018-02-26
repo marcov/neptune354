@@ -1,0 +1,51 @@
+#!/bin/sh
+set -e
+clear
+sleep 1
+echo -e '\n\033[1mThis program will install Optware package system for Neptune354 firmware.\033[0m'
+
+echo -e '\n\n**Prerequisites**\n'
+
+
+echo -e '1)NFS folder mounted on /opt.\nBoth via WebIF (Administation->Utilities) or entering the command:'
+
+echo -e '\033[1mmount -t nfs -o rsize=1024,wsize=1024,nolock serverip:/full-path-to-nfs-folder/ /opt/\033[0m'
+
+echo -e '\n2)/etc/exports file on your NFS server should contain a configuration line like:'
+
+echo -e '\033[1m/full-path-to-nfs-folder    192.168.1.0/255.255.255.0(rw,sync,insecure,no_subtree_check)\033[0m'
+
+echo -e '\n3)Active Internet Connection'
+
+
+echo -e '\n\nContinue[y/n]'
+read ANSWER
+if [[ $ANSWER != "y" ]]
+then
+	echo "Bye."
+	exit 0
+fi
+
+if ! mount | grep opt >> /dev/null
+then
+	echo -e '/opt is not mounted.\nBye.'
+	exit 0
+fi
+
+wget "http://www.webalice.it/markvd/packages/neptune-optware.tar.gz" -O /opt/ipkg.tar.gz
+cd /opt
+echo -e '\n\n** Please wait... **\n'
+tar xvzf ipkg.tar.gz 
+rm /opt/ipkg.tar.gz
+
+
+echo -e '\n\n**Optware suppport installed.**\n'
+echo -e ' Quick usage:'
+echo -e ' ipkg update  : update the list of available packages on repository'
+echo -e ' ipkg list    : list all available packages'
+echo -e ' ipkg list    : list all installed packages'
+echo -e ' ipkg list | grep pkgname  : search for pkgname'
+echo -e ' ipkg install pkgname  : install pkgname'
+echo -e '\nType ipkg --help for more info.'
+echo "Bye."
+exit 0
